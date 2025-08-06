@@ -3,7 +3,7 @@ import "./App.css";
 import { ASTAnalyzer } from "yukigo";
 import { YukigoHaskellParser } from "yukigo-haskell-parser";
 import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
+import { highlight, languages } from "prismjs";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-haskell";
 import "prismjs/components/prism-json";
@@ -42,7 +42,7 @@ function App() {
             <Editor
               value={code}
               onValueChange={(code) => setCode(code)}
-              highlight={(code) => highlight(code, languages.hs)}
+              highlight={(code) => highlight(code, languages.hs, "haskell")}
               padding={10}
               className="bg-zinc-800 border-none h-full"
             />
@@ -53,7 +53,7 @@ function App() {
               <Editor
                 value={expectations}
                 onValueChange={(code) => setExpectations(code)}
-                highlight={(code) => highlight(code, languages.json)}
+                highlight={(code) => highlight(code, languages.json, "json")}
                 padding={10}
                 className="bg-zinc-800 border-none h-full"
               />
@@ -74,7 +74,7 @@ function App() {
               value={results}
               disabled
               onValueChange={() => {}}
-              highlight={(code) => highlight(code, languages.json)}
+              highlight={(code) => highlight(code, languages.json, "json")}
               padding={10}
               className="bg-zinc-800 border-none h-full"
             />
@@ -85,7 +85,7 @@ function App() {
               value={parserOutput}
               disabled
               onValueChange={() => {}}
-              highlight={(code) => highlight(code, languages.text)}
+              highlight={(code) => highlight(code, languages.text, "text")}
               padding={10}
               className="bg-zinc-800 border-none h-full"
             />
