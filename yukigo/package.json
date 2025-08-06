@@ -1,0 +1,21 @@
+{
+  "name": "yukigo",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "yaml": "^2.8.0",
+    "yukigo-core": "file:../yukigo-core"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1"
+  }
+}

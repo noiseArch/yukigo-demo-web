@@ -16,9 +16,9 @@
     "react-dom": "^19.1.0",
     "react-simple-code-editor": "^0.14.1",
     "tailwindcss": "^4.1.11",
-    "yukigo": "file:../yukigo",
-    "yukigo-core": "file:../yukigo-core",
-    "yukigo-haskell-parser": "file:../yukigo-haskell-parser"
+    "yukigo": "file:./yukigo",
+    "yukigo-core": "file:./yukigo-core",
+    "yukigo-haskell-parser": "file:./yukigo-haskell-parser"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
