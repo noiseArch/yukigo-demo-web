@@ -22,8 +22,7 @@ function App() {
   const runExpectations = () => {
     const parser = new YukigoHaskellParser();
     const ast = parser.parse(code);
-    const errors = parser.getErrors();
-    setParserOutput(errors ? errors.join("\n\n") : "");
+    setParserOutput(parser.errors ? parser.errors.join("\n\n") : "");
     const analyser = new ASTAnalyzer(ast);
     const exp = JSON.parse(expectations);
     const result = analyser.analyze(exp);
