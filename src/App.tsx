@@ -21,12 +21,16 @@ function App() {
 
   const runExpectations = () => {
     const parser = new YukigoHaskellParser();
-    const ast = parser.parse(code);
-    setParserOutput(parser.errors ? parser.errors.join("\n\n") : "");
-    const analyser = new ASTAnalyzer(ast);
-    const exp = JSON.parse(expectations);
-    const result = analyser.analyze(exp);
-    setResults(JSON.stringify(result, null, 2));
+    try {
+      const ast = parser.parse(code);
+      setParserOutput(parser.errors ? parser.errors.join("\n\n") : "");
+      const analyser = new ASTAnalyzer(ast);
+      const exp = JSON.parse(expectations);
+      const result = analyser.analyze(exp);
+      setResults(JSON.stringify(result, null, 2));
+    } catch (error) {
+      setParserOutput(parser.errors ? parser.errors.join("\n\n") : "");
+    }
   };
   return (
     <main className="bg-zinc-700 text-white w-full h-full min-h-screen p-18 flex flex-col gap-16">
