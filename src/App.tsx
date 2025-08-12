@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { ASTAnalyzer } from "yukigo";
+import { ASTAnalyzer, Tester, Translator } from "yukigo";
 import { YukigoHaskellParser } from "yukigo-haskell-parser";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
@@ -16,9 +16,12 @@ function App() {
   const [expectations, setExpectations] = useState<string>(
     '[\n\t{\n\t\t"inspection": "HasBinding",\n\t\t"args": {"name": "doble"},\n\t\t"expected": true\n\t},\n\t{\n\t\t"inspection": "UsesGuards",\n\t\t"args": {"name": "doble"},\n\t\t"expected": false\n\t}\n]'
   );
+  const [tests, setTests] = useState<string>(
+    `describe('Basictests',()=>{\n\tit('doble of 4 is 8',()=>{\n\t\tassert.equal(doble(4), 8);\n\t});\n\tit('doble of 0 is 0',()=>{\n\t\tassert.equal(doble(0), 0);\n\t});\n\tit('doble of -2 is -4',()=>{\n\t\tassert.equal(doble(-2), -4);\n\t});\n});`
+  );
   const [results, setResults] = useState<string>("");
   const [parserOutput, setParserOutput] = useState<string>("");
-
+  const [testerOutput, setTesterOutput] = useState<string>("");
   const runExpectations = () => {
     const parser = new YukigoHaskellParser();
     try {
@@ -27,8 +30,14 @@ function App() {
       const analyser = new ASTAnalyzer(ast);
       const exp = JSON.parse(expectations);
       const result = analyser.analyze(exp);
+      const translator = new Translator(ast)
+      const tsCode = translator.translate()
+      const tester = new Tester()
+      const testResults = tester.test(tsCode, tests)
+      setTesterOutput(JSON.stringify(testResults, null, 2));
       setResults(JSON.stringify(result, null, 2));
     } catch (error) {
+      console.log(error)
       setParserOutput(parser.errors ? parser.errors.join("\n\n") : "");
     }
   };
@@ -54,6 +63,18 @@ function App() {
                 value={expectations}
                 onValueChange={(code) => setExpectations(code)}
                 highlight={(code) => highlight(code, languages.json, "json")}
+                padding={10}
+                className="bg-zinc-800 border-none h-full"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col h-1/2 gap-2">
+            <h2 className="text-xl">Tests</h2>
+            <div className="">
+              <Editor
+                value={tests}
+                onValueChange={(code) => setTests(code)}
+                highlight={(code) => highlight(code, languages.js, "js")}
                 padding={10}
                 className="bg-zinc-800 border-none h-full"
               />
@@ -86,6 +107,17 @@ function App() {
               disabled
               onValueChange={() => {}}
               highlight={(code) => highlight(code, languages.text, "text")}
+              padding={10}
+              className="bg-zinc-800 border-none h-full"
+            />
+          </div>
+          <div className="flex flex-col h-1/2 w-full gap-2">
+            <h2 className="text-xl">Tester Output</h2>
+            <Editor
+              value={testerOutput}
+              disabled
+              onValueChange={() => {}}
+              highlight={(code) => highlight(code, languages.json, "json")}
               padding={10}
               className="bg-zinc-800 border-none h-full"
             />

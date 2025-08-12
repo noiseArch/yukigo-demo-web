@@ -24,19 +24,11 @@ type InspectionHandlerMap = {
 
 export class ASTAnalyzer {
   private ast: ASTGrouped;
-  private typeCheckers: Map<string, (ast: ASTGrouped) => TypeError[]> =
-    new Map();
 
   constructor(ast: ASTGrouped) {
     this.ast = ast;
   }
 
-  registerTypeChecker(
-    language: string,
-    checker: (ast: ASTGrouped) => TypeError[]
-  ) {
-    this.typeCheckers.set(language, checker);
-  }
   private inspectionHandlers: InspectionHandlerMap = {
     HasBinding: (ast, args) => {
       const bindingName = args.name;

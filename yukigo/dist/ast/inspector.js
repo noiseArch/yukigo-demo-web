@@ -1,12 +1,8 @@
 import { traverse } from "yukigo-core";
 export class ASTAnalyzer {
     ast;
-    typeCheckers = new Map();
     constructor(ast) {
         this.ast = ast;
-    }
-    registerTypeChecker(language, checker) {
-        this.typeCheckers.set(language, checker);
     }
     inspectionHandlers = {
         HasBinding: (ast, args) => {

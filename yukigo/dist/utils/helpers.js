@@ -38,3 +38,13 @@ export function translateMulangToInspectionRules(mulangYamlString) {
     }
     return inspectionRules;
 }
+export const yukigoTsMappings = {
+    YuNumber: "number",
+    YuString: "string",
+    YuChar: "char",
+    YuBoolean: "boolean",
+    YuNull: "null",
+    YuUndefined: "undefined",
+    YuList: "YuList",
+    YuSymbol: "YuSymbol",
+};

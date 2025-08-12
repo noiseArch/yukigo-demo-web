@@ -1,6 +1,9 @@
 # ❄️ Yukigo (WIP)
+A universal, multi-language, multi-paradigm code analyzer highly inspired in [mulang](https://github.com/mumuki/mulang)
 
-> A universal, multi-language, multi-paradigm code analyzer highly inspired in [mulang](https://github.com/mumuki/mulang)
+> [!WARNING]
+> This project is still in a "work in progress" state. Everything is subject to change :)
+
 
 ## Components
 
@@ -44,21 +47,17 @@ yarn add yukigo yukigo-haskell-parser
 import { ASTAnalyzer } from "yukigo";
 import { YukigoHaskellParser } from "yukigo-haskell-parser";
 
-const code = `
-type Number = Int
-doble :: Number -> Number
-doble x = x * 2`;
-
+const code = "doble num = num * 2";
 const expectations = [
+  {
+    inspection: "HasBinding",
+    args: { name: "minimoEntre" },
+    expected: false,
+  },
   {
     inspection: "HasBinding",
     args: { name: "doble" },
     expected: true,
-  },
-  {
-    inspection: "UsesGuards",
-    args: { name: "doble" },
-    expected: false,
   },
 ];
 
@@ -66,10 +65,19 @@ const parser = new YukigoHaskellParser();
 const ast = parser.parse(code);
 
 const analyser = new ASTAnalyzer(ast);
-const results = analyser.analyze(exp);
+const result = analyser.analyse(expectations);
 
 console.log(results);
 // [
+//   {
+//     rule: {
+//       inspection: "HasBinding",
+//       args: { name: "minimoEntre" },
+//       expected: false,
+//     },
+//     passed: true,
+//     actual: false,
+//   },
 //   {
 //     rule: {
 //       inspection: "HasBinding",
@@ -78,15 +86,6 @@ console.log(results);
 //     },
 //     passed: true,
 //     actual: true,
-//   },
-//   {
-//     rule: {
-//       inspection: "UsesGuards",
-//       args: { name: "doble" },
-//       expected: false,
-//     },
-//     passed: false,
-//     actual: false,
 //   },
 // ];
 ```
@@ -137,7 +136,7 @@ const parser = new YukigoHaskellParser();
 const ast = parser.parse(code);
 
 const analyser = new ASTAnalyzer(ast);
-const results = analyser.analyze(exp);
+const result = analyser.analyse(expectations);
 
 console.log(results);
 // [
@@ -178,17 +177,22 @@ console.log(results);
 // ];
 ```
 
-# Current repositories
-
-- yukigo-core: A set of utils and type definitions to build parsers
-- yukigo-haskell-parser
-- yukigo-cli
+# Relevant tools
+- [yukigo-core](https://github.com/noiseArch/yukigo-core): A library of AST's node definitions
+  
+## Tools
+- [yukigo-cli](https://github.com/noiseArch/yukigo-cli)
+- [yukigo-demo-web](https://github.com/noiseArch/yukigo-demo-web/)
+  
+## Parsers
+- [yukigo-haskell-parser](https://github.com/noiseArch/yukigo-haskell-parser)
 
 # How to make a parser
 
-A yukigo's parser is a class that implements the interface `YukigoParser` which exposes a public method called `parse` like this:
+A yukigo's parser is a class that implements the interface `YukigoParser` which exposes a public method called `parse` and an `errors` array like this:
 ```ts
-parse: (code: string) => AST
+errors: string[];
+parse: (code: string) => AST;
 ```
 
 The package `yukigo-core` has all the current supported AST nodes.

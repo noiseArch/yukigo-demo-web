@@ -12,9 +12,7 @@ export type AnalysisResult = {
 };
 export declare class ASTAnalyzer {
     private ast;
-    private typeCheckers;
     constructor(ast: ASTGrouped);
-    registerTypeChecker(language: string, checker: (ast: ASTGrouped) => TypeError[]): void;
     private inspectionHandlers;
     /**
      * Registers a new custom inspection handler.

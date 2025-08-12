@@ -1,5 +1,6 @@
 import { parseDocument } from "yaml";
 import { InspectionRule } from "../ast/inspector.js";
+import { YukigoPrimitive } from "yukigo-core";
 
 /**
  * Translates Mulang inspections (YAML format) to an array of `InspectionRule` objects.
@@ -58,3 +59,14 @@ export function translateMulangToInspectionRules(
 
   return inspectionRules;
 }
+
+export const yukigoTsMappings: { [key in YukigoPrimitive]: string } = {
+  YuNumber: "number",
+  YuString: "string",
+  YuChar: "char",
+  YuBoolean: "boolean",
+  YuNull: "null",
+  YuUndefined: "undefined",
+  YuList: "YuList",
+  YuSymbol: "YuSymbol",
+};
